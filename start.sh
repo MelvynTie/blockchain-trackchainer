@@ -21,26 +21,40 @@ export CHANNEL_NAME=trackchainer
 export PATH=$GOPATH/src/trackchainer/hyperledger/fabric/build/bin:${PWD}/binary:${PWD}:$PATH
 export FABRIC_CFG_PATH=${PWD}/network
 
+# helper to run Fabric tools via Docker if on macOS
+run_tool() {
+  if [ "$(uname)" = "Darwin" ]; then
+    docker run --rm \
+      -v "${PWD}":/opt/gopath/src/github.com/hyperledger/fabric/peer \
+      -w /opt/gopath/src/github.com/hyperledger/fabric/peer \
+      -e FABRIC_CFG_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/network \
+      hyperledger/fabric-tools:x86_64-1.1.0 \
+      "$@"
+  else
+    "$@"
+  fi
+}
+
 # remove previous crypto material and config transactions
 rm -fr ./network/cli/peers/*
 mkdir -p ./network/cli/peers
 
 # generate crypto material
-cryptogen generate --config=./network/crypto-config.yaml --output=./network/cli/peers
+run_tool cryptogen generate --config=./network/crypto-config.yaml --output=./network/cli/peers
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate crypto material..."
   exit 1
 fi
 
 # generate genesis block for orderer
-configtxgen -profile OneOrgOrdererGenesis -outputBlock ./network/cli/peers/genesis.block
+run_tool configtxgen -profile OneOrgOrdererGenesis -outputBlock ./network/cli/peers/genesis.block
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate orderer genesis block..."
   exit 1
 fi
 
 # generate channel configuration transaction
-configtxgen -profile OneOrgChannel -outputCreateChannelTx ./network/cli/peers/channel.tx -channelID $CHANNEL_NAME
+run_tool configtxgen -profile OneOrgChannel -outputCreateChannelTx ./network/cli/peers/channel.tx -channelID $CHANNEL_NAME
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate channel configuration transaction..."
   exit 1
@@ -49,7 +63,7 @@ fi
 cp -r ./network/cli/peers/channel.tx ./web/
 
 # generate anchor peer transaction
-configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./network/cli/peers/TrackchainerOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg TrackchainerOrgMSP
+run_tool configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./network/cli/peers/TrackchainerOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg TrackchainerOrgMSP
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate anchor peer update for orgMSP..."
   exit 1
@@ -193,6 +207,12 @@ if [ $DOWNLOAD ]; then
 
    echo "===> Pulling fabric ca Image"
    dockerCaPull ${CA_TAG}
+   
+   if [ "$(uname)" = "Darwin" ]; then
+      echo "===> Pulling fabric tools Image for macOS"
+      docker pull hyperledger/fabric-tools:${FABRIC_TAG}
+   fi
+   
    echo
    echo "===> List out hyperledger docker images"
    docker images | grep hyperledger*
@@ -206,7 +226,7 @@ if [ $BUILD ];
     docker build -t orderer0:latest network/orderer
     docker build -t trackchainer-peer:latest network/peer
     docker build -t trackchainer-ca:latest network/org
-    #docker build -t web:latest web/
+    docker build -t web:latest web/
 fi
 
 ################################################################################

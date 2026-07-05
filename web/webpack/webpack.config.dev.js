@@ -2,7 +2,6 @@ import webpack from 'webpack';
 import { resolve } from 'path';
 
 const hotReloadModules = [
-  'react-hot-loader/patch',
   'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000'
 ];
 
@@ -11,7 +10,7 @@ export default {
   devtool: 'eval',
   entry: {
     'common': [
-      'babel-polyfill',
+      'core-js/stable',
       'isomorphic-fetch',
       ...hotReloadModules,
       resolve(__dirname, '../client/common')
@@ -24,15 +23,13 @@ export default {
     filename: '[name].bundle.js'
   },
   plugins: [
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin()
   ],
   module: {
     rules: [
       { test: /\.js$/, exclude: /node_modules/, use: ['babel-loader'] },
-      { test: /(\.css)$/, use: ['style-loader', 'css-loader', 'postcss-loader'] }
+      { test: /(\\.css)$/, use: ['style-loader', 'css-loader', 'postcss-loader'] }
     ]
   }
 };

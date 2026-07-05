@@ -9,7 +9,6 @@
 import config from './config';
 import { wrapError } from './utils';
 import { trackchainerClient as client, isReady } from './setup';
-import uuidV4 from 'uuid/v4';
 
 // Show all the laptops data
 export async function showLaptops() {

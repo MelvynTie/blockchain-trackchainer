@@ -8,7 +8,8 @@
 
 import { resolve } from 'path';
 import EventEmitter from 'events';
-import { load as loadProto } from 'grpc';
+import * as grpc from '@grpc/grpc-js';
+import * as protoLoader from '@grpc/proto-loader';
 import Long from 'long';
 import hfc from 'fabric-client';
 import utils from 'fabric-client/lib/utils';

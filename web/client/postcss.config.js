@@ -4,8 +4,8 @@
 # AUTHOR:MELVYN TIE
 ###################*/
 
-module.exports = ({ file, options, env }) => ({
+module.exports = {
 	plugins: {
-		'autoprefixer': env == 'production' ? options.autoprefixer : false
+		'autoprefixer': {}
 	}
-});
+};

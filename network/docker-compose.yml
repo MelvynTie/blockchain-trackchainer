@@ -108,21 +108,24 @@ services:
 # DEFINE APP
 ################################################################################
 
-#  web:
-#    container_name: web
-#    image: web
-#    environment:
-#        - PORT=3000
-#        - DOCKER_SOCKET_PATH=/host/var/run/docker.sock
-#        - DOCKER_CCENV_IMAGE=hyperledger/fabric-ccenv:x86_64-1.1.0
-#    volumes:
-#        - /var/run/:/host/var/run/
-#    networks:
-#      - net
-#    depends_on:
-#        - orderer0
-#        - trackchainer-ca
-#        - trackchainer-peer
-#        - couchdb
-#    ports:
-#      - 3000:3000
+  web:
+    container_name: web
+    image: web:latest
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    environment:
+        - PORT=3000
+        - DOCKER_SOCKET_PATH=/host/var/run/docker.sock
+        - DOCKER_CCENV_IMAGE=hyperledger/fabric-ccenv:x86_64-1.1.0
+    volumes:
+        - /var/run/:/host/var/run/
+    networks:
+      - net
+    depends_on:
+        - orderer0
+        - trackchainer-ca
+        - trackchainer-peer
+        - couchdb
+    ports:
+      - 3000:3000

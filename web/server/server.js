@@ -8,12 +8,12 @@
 
 'use strict';
 
-import 'babel-polyfill';
+import 'core-js/stable';
 import dotenv from 'dotenv';
 import server from './app';
 // Check if the NODE_ENV variable is production or development
 if (process.env.NODE_ENV === 'production') {
-  require('babel-register');
+  require('@babel/register');
 }
 // Determine the port number
 const port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;

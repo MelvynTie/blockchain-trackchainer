@@ -164,6 +164,14 @@ func (s *SmartContract) create_laptop(APIstub shim.ChaincodeStubInterface, args 
 		return shim.Error(err.Error())
 	}
 
+	existingBytes, err := APIstub.GetState(input.Id)
+	if err != nil {
+		return shim.Error("Failed to check if laptop exists: " + err.Error())
+	}
+	if existingBytes != nil && len(existingBytes) > 0 {
+		return shim.Error("Laptop already exists: " + input.Id)
+	}
+
 	var laptop = Laptop{SerialNo: input.SerialNo, Employer: input.Employer}
 																		
 	laptopAsBytes, _ := json.Marshal(laptop)
@@ -194,7 +202,14 @@ func (s *SmartContract) edit_laptop(APIstub shim.ChaincodeStubInterface, args []
 		return shim.Error(err.Error())
 	}
 
-	laptopAsBytes, _ := APIstub.GetState(input.Id)
+	laptopAsBytes, err := APIstub.GetState(input.Id)
+	if err != nil {
+		return shim.Error("Failed to retrieve laptop state: " + err.Error())
+	}
+	if laptopAsBytes == nil || len(laptopAsBytes) == 0 {
+		return shim.Error("Laptop with ID " + input.Id + " does not exist")
+	}
+
 	laptop := Laptop{}
 
 	json.Unmarshal(laptopAsBytes, &laptop)
@@ -229,7 +244,13 @@ func (s *SmartContract) search_laptop(APIstub shim.ChaincodeStubInterface, args 
 		return shim.Error(err.Error())
 	}
 	
-	dbLaptopBytes,err:= APIstub.GetState(input.Id)
+	dbLaptopBytes, err := APIstub.GetState(input.Id)
+	if err != nil {
+		return shim.Error("Failed to retrieve laptop state: " + err.Error())
+	}
+	if dbLaptopBytes == nil || len(dbLaptopBytes) == 0 {
+		return shim.Error("Laptop with ID " + input.Id + " does not exist")
+	}
 	var dbLaptop Laptop
 	
 	err=json.Unmarshal(dbLaptopBytes,&dbLaptop)

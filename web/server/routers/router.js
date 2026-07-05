@@ -71,13 +71,19 @@ router.post('/v1/api/remove', async (req, res) => {
   try {
     const data = await Peer.showLaptops();
     var serialNo = sn;
+    let removed = false;
     for(var i=0; i<data.length; i++){
       if(data[i].Record.sn == serialNo){
-        const result = Peer.removeLaptop(data[i].Key);
+        const result = await Peer.removeLaptop(data[i].Key);
         if(result){
-          res.json(laptop || []);
+          res.json({ success: true, key: data[i].Key });
+          removed = true;
+          break;
         }
       }
+    }
+    if (!removed) {
+      res.json({ error: 'Laptop with the specified serial number not found.' });
     }
   } catch (e) {
     res.json({ error: 'Error accessing blockchain.' });
@@ -120,9 +126,20 @@ router.get('/create', async (req, res) => {
 // Submit the create request 
 router.post('/create', async (req, res) => {
   try {
-    const data = await Peer.showLaptops();
-    var lastId = data.length+1;
-    lastId = "LAPTOP"+lastId.toString();
+    const data = await Peer.showLaptops() || [];
+    let maxId = -1;
+    for (const item of data) {
+      if (item && item.Key) {
+        const match = item.Key.match(/^LAPTOP(\d+)$/);
+        if (match) {
+          const num = parseInt(match[1], 10);
+          if (num > maxId) {
+            maxId = num;
+          }
+        }
+      }
+    }
+    const lastId = "LAPTOP" + (maxId + 1);
     let {sn , employer} = req.body;
     const laptop = await Peer.createLaptop(lastId, sn, employer);
     if(laptop){
@@ -140,9 +157,11 @@ router.post('/create', async (req, res) => {
 router.post('/history', async (req, res) => {
   try {
     let { id } = req.body;
-    var history = await Peer.getLaptopHistory(id);
+    var history = await Peer.getLaptopHistory(id) || [];
     for(var i =0; i<history.length; i++){
-      history[i]["time"] = convert(history[i]["timestamp"]["seconds"]);
+      if (history[i] && history[i]["timestamp"]) {
+        history[i]["time"] = convert(history[i]["timestamp"]["seconds"]);
+      }
     }
     res.render('HistoryTable', {title:"History Table", table:history, laptop:id});
   } catch (e) {
