@@ -1,6 +1,5 @@
 #######################
-# JABIL Co.           #
-# Trackchainer        #
+# LedgerIT        #
 # Author : Melvyn Tie #
 #######################
 
@@ -18,9 +17,9 @@ networks:
   net:
 
 services:
-  trackchainer-ca:
-    container_name: trackchainer-ca
-    image: trackchainer-ca
+  ledgerit-ca:
+    container_name: ledgerit-ca
+    image: ledgerit-ca
     extends:
             file: ./base/ca-base.yaml
             service: ca-base
@@ -59,17 +58,17 @@ services:
 # DEFINE THE PEER0
 ################################################################################
 
-  trackchainer-peer:
-    container_name: trackchainer-peer
+  ledgerit-peer:
+    container_name: ledgerit-peer
     extends:
             file: ./base/peer-base.yaml
             service: peer-base
-    image: trackchainer-peer
+    image: ledgerit-peer
     environment:
-      - CORE_PEER_ID=trackchainer-peer
-      - CORE_PEER_ADDRESS=trackchainer-peer:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=trackchainer-peer:7051
-      - CORE_PEER_LOCALMSPID=TrackchainerOrgMSP
+      - CORE_PEER_ID=ledgerit-peer
+      - CORE_PEER_ADDRESS=ledgerit-peer:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=ledgerit-peer:7051
+      - CORE_PEER_LOCALMSPID=LedgerITOrgMSP
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=admin
@@ -119,13 +118,13 @@ services:
         - DOCKER_SOCKET_PATH=/host/var/run/docker.sock
         - DOCKER_CCENV_IMAGE=hyperledger/fabric-ccenv:2.5.4
     volumes:
-        - /var/run/:/host/var/run/
+        - /var/run/docker.sock:/host/var/run/docker.sock
     networks:
       - net
     depends_on:
         - orderer0
-        - trackchainer-ca
-        - trackchainer-peer
+        - ledgerit-ca
+        - ledgerit-peer
         - couchdb
     ports:
       - 3000:3000
@@ -140,20 +139,20 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=trackchainer-peer:7051
-      - CORE_PEER_LOCALMSPID=TrackchainerOrgMSP
+      - CORE_PEER_ADDRESS=ledgerit-peer:7051
+      - CORE_PEER_LOCALMSPID=LedgerITOrgMSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/trackchainer-org/peers/trackchainer-peer/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/trackchainer-org/peers/trackchainer-peer/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/trackchainer-org/peers/trackchainer-peer/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/trackchainer-org/users/Admin@trackchainer-org/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/users/Admin@ledgerit-org/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
-        - /var/run/:/host/var/run/
+        - /var/run/docker.sock:/host/var/run/docker.sock
         - ./cli/peers:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ../web/chaincode/src/trackchainer:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
+        - ../web/chaincode/src/ledgerit:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/
     networks:
       - net
     depends_on:
-      - trackchainer-peer
+      - ledgerit-peer

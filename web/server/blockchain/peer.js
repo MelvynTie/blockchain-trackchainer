@@ -1,14 +1,13 @@
 'use strict';
 
 ////////////////////////
-// JABIL Co.
-// Trackchainer
+// LedgerIT
 // Author : Melvyn Tie
 ////////////////////////
 
 import config from './config';
 import { wrapError } from './utils';
-import { trackchainerClient as client, isReady } from './setup';
+import { ledgeritClient as client, isReady } from './setup';
 
 // Show all the laptops data
 export async function showLaptops() {

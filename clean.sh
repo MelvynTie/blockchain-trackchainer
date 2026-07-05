@@ -1,8 +1,7 @@
 #!/bin/bash
 
 #######################
-# JABIL Co            #
-# Trackchainer        #
+# LedgerIT        #
 # Author : Melvyn Tie #
 #######################
 
@@ -14,7 +13,7 @@
 # CLEAN THE CONTAINERS AND IMAGES
 ################################################################################
 
-export COMPOSE_PROJECT_NAME=trackchainer
+export COMPOSE_PROJECT_NAME=ledgerit
 
 # remove the docker containers
 docker rm -f $(docker ps -aq)
@@ -23,7 +22,7 @@ docker rm -f $(docker ps -aq)
 docker rmi $(docker images -f "dangling=true" -q)
 
 # remove docker images
-images=( trackchainer-ca trackchainer-peer orderer0 app )
+images=( ledgerit-ca ledgerit-peer orderer0 app )
 
 for i in "${images[@]}"
 do
@@ -32,7 +31,7 @@ do
 done
 
 # docker rmi -f $(docker images | grep none)
-images=(dev-trackchainer-peer)
+images=(dev-ledgerit-peer)
 
 for i in "${images[@]}"
 do

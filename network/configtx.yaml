@@ -5,7 +5,7 @@ Organizations:
     - &OrdererOrg
         Name: OrdererOrg
         ID: OrdererMSP
-        MSPDir: cli/peers/ordererOrganizations/trackchainer-orderer/msp
+        MSPDir: cli/peers/ordererOrganizations/ledgerit-orderer/msp
         Policies:
             Readers:
                 Type: Signature
@@ -17,25 +17,25 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
 
-    - &TrackchainerOrg
-        Name: TrackchainerOrgMSP
-        ID: TrackchainerOrgMSP
-        MSPDir: cli/peers/peerOrganizations/trackchainer-org/msp
+    - &LedgerITOrg
+        Name: LedgerITOrgMSP
+        ID: LedgerITOrgMSP
+        MSPDir: cli/peers/peerOrganizations/ledgerit-org/msp
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('TrackchainerOrgMSP.admin', 'TrackchainerOrgMSP.peer', 'TrackchainerOrgMSP.client')"
+                Rule: "OR('LedgerITOrgMSP.admin', 'LedgerITOrgMSP.peer', 'LedgerITOrgMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('TrackchainerOrgMSP.admin', 'TrackchainerOrgMSP.client')"
+                Rule: "OR('LedgerITOrgMSP.admin', 'LedgerITOrgMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('TrackchainerOrgMSP.admin')"
+                Rule: "OR('LedgerITOrgMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('TrackchainerOrgMSP.peer')"
+                Rule: "OR('LedgerITOrgMSP.peer')"
         AnchorPeers:
-            - Host: trackchainer-peer
+            - Host: ledgerit-peer
               Port: 7051
 
 ################################################################################
@@ -90,8 +90,8 @@ Orderer: &OrdererDefaults
         Consenters:
         - Host: orderer0
           Port: 7050
-          ClientTLSCert: cli/peers/ordererOrganizations/trackchainer-orderer/orderers/orderer0/tls/server.crt
-          ServerTLSCert: cli/peers/ordererOrganizations/trackchainer-orderer/orderers/orderer0/tls/server.crt
+          ClientTLSCert: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer0/tls/server.crt
+          ServerTLSCert: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer0/tls/server.crt
     Policies:
         Readers:
             Type: ImplicitMeta
@@ -138,15 +138,15 @@ Profiles:
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
-            TrackchainerConsortium:
+            LedgerITConsortium:
                 Organizations:
-                    - *TrackchainerOrg
+                    - *LedgerITOrg
     OneOrgChannel:
-        Consortium: TrackchainerConsortium
+        Consortium: LedgerITConsortium
         <<: *ChannelDefaults
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *TrackchainerOrg
+                - *LedgerITOrg
             Capabilities:
                 <<: *ApplicationCapabilities

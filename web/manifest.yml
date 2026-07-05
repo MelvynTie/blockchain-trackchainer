@@ -1,11 +1,11 @@
 ---
 
 applications:
-- name: blockchain-trackchainer
+- name: blockchain-ledgerit
   path: .
   command: npm run serve
   memory: 512M
   buildpack: sdk-for-nodejs
-  hostname: blockchain-trackchainer
+  hostname: blockchain-ledgerit
   env:
     NODE_ENV: production

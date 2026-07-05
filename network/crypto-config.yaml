@@ -1,6 +1,5 @@
 #######################
-# JABIL Co.           #
-# Trackchainer        #
+# LedgerIT        #
 # Author : Melvyn Tie #
 #######################
 
@@ -10,7 +9,7 @@
 
 OrdererOrgs:
   - Name: Orderer0
-    Domain: trackchainer-orderer
+    Domain: ledgerit-orderer
     CommonName: orderer0
     Specs:
       - Hostname: orderer0
@@ -21,8 +20,8 @@ OrdererOrgs:
 ################################################################################
 
 PeerOrgs:
-  - Name: TrackchainerOrg
-    Domain: trackchainer-org
+  - Name: LedgerITOrg
+    Domain: ledgerit-org
     Specs:
-      - Hostname: trackchainer-peer
+      - Hostname: ledgerit-peer
         CommonName: "{{.Hostname}}"

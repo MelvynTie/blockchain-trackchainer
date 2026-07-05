@@ -12,5 +12,5 @@ dist
 !chaincode/
 !chaincode/src
 !chaincode/src/bcin
-trackchainer-peer
+ledgerit-peer
 channel.tx

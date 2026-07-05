@@ -1,7 +1,6 @@
 //**********************
 //**********************
-// JABIL Co.           *
-// Trackchainer        *
+// LedgerIT        *
 // Author : Melvyn Tie *
 //**********************
 //**********************
@@ -23,7 +22,6 @@ import (
 	sc "github.com/hyperledger/fabric-protos-go/peer"
 )
 
-var logger = shim.NewLogger("main")
  
 // Define the Smart Contract structure
 type SmartContract struct {
@@ -340,8 +338,6 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
 
 // The main function is only relevant in unit test mode. Only included here for completeness.
 func main() {
-
-	logger.SetLevel(shim.LogInfo)
 
 	err := shim.Start(new(SmartContract))
 	if err != nil {

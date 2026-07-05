@@ -1,8 +1,7 @@
 'use strict';
 
 ////////////////////////
-// JABIL Co.
-// Trackchainer
+// LedgerIT
 // Author : Melvyn Tie
 ////////////////////////
 
@@ -50,7 +49,7 @@ export class OrganizationClient extends EventEmitter {
       }
 
       const connectionProfile = {
-        name: 'trackchainer-network',
+        name: 'ledgerit-network',
         version: '1.0.0',
         client: {
           organization: this._caConfig.mspId,
@@ -90,7 +89,7 @@ export class OrganizationClient extends EventEmitter {
       });
       
       this.network = await this.gateway.getNetwork(this._channelName);
-      this.contract = this.network.getContract('trackchainer');
+      this.contract = this.network.getContract('ledgerit');
       
       // Setup event listener
       await this.network.addBlockListener('block-listener', (event) => {

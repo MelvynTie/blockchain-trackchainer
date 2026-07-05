@@ -34,7 +34,7 @@ dist
 !chaincode/
 !chaincode/src
 !chaincode/src/bcin
-trackchainer-peer
+ledgerit-peer
 
 # Blockchain auto-generated
 network/cli/peers/*
@@ -100,3 +100,4 @@ typings/
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+.DS_Store

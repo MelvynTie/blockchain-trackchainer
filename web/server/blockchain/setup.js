@@ -1,8 +1,7 @@
 'use strict';
 
 ////////////////////////
-// JABIL Co.
-// Trackchainer
+// LedgerIT
 // Author : Melvyn Tie
 ////////////////////////
 
@@ -14,7 +13,7 @@ let status = 'down';
 let statusChangedCallbacks = [];
 
 // Setup clients per organization
-const trackchainerClient = new OrganizationClient(
+const ledgeritClient = new OrganizationClient(
   config.channelName,
   config.orderer0,
   config.org.peer,
@@ -56,9 +55,9 @@ export function isReady() {
   // Retry loop to wait for chaincode to be deployed by deploy.sh
   while (!connected) {
     try {
-      await trackchainerClient.login();
+      await ledgeritClient.login();
       // Try a simple query to ensure chaincode is up and responsive
-      await trackchainerClient.query('trackchainer', '1.0', 'show_laptops');
+      await ledgeritClient.query('ledgerit', '1.0', 'show_laptops');
       connected = true;
       console.log('Successfully connected to the blockchain network and chaincode is ready.');
       setStatus('ready');
@@ -70,5 +69,5 @@ export function isReady() {
 })();
 
 export {
-  trackchainerClient
+  ledgeritClient
 };

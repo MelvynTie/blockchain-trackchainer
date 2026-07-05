@@ -1,8 +1,7 @@
 #! /usr/bin/env node
 
 ////////////////////////
-// JABIL Co.
-// Trackchainer
+// LedgerIT
 // Author : Melvyn Tie
 ////////////////////////
 

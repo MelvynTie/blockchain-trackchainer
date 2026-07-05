@@ -9,7 +9,7 @@ tls:
     certfiles:
 
 ca:
-  name: trackchainer-org1
+  name: ledgerit-org1
   keyfile: ./ca/key.pem
   certfile: ./ca/cert.pem
   chainfile: ./ca/cert.pem
@@ -60,7 +60,7 @@ csr:
     O: "IBM"
     OU: "Cloud"
   hosts:
-  - trackchainer-org1
+  - ledgerit-org1
   - localhost
   ca:
     expiry: 131400h

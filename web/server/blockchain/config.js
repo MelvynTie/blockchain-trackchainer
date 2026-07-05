@@ -1,6 +1,5 @@
 ////////////////////////
-// JABIL Co.
-// Trackchainer
+// LedgerIT
 // Author : Melvyn Tie
 ////////////////////////
 
@@ -13,11 +12,11 @@ const basePath = resolve(__dirname, '../../certs');
 const readCryptoFile = filename => readFileSync(resolve(basePath, filename)).toString();
 // Define the config file
 const config = {
-  channelName: 'trackchainer',
+  channelName: 'ledgerit',
   channelConfig: readFileSync(resolve(__dirname, '../../channel.tx')),
-  chaincodeId: 'trackchainer',
+  chaincodeId: 'ledgerit',
   chaincodeVersion: 'v1',
-  chaincodePath: 'trackchainer',
+  chaincodePath: 'ledgerit',
   orderer0: {
     hostname: 'orderer0',
     url: 'grpcs://localhost:7050',
@@ -25,19 +24,19 @@ const config = {
   },
   org: {
     peer: {
-      hostname: 'trackchainer-peer',
+      hostname: 'ledgerit-peer',
       url: 'grpcs://localhost:7051',
       eventHubUrl: 'grpcs://localhost:7053',
       pem: readCryptoFile('org.pem')
     },
     ca: {
-      hostname: 'trackchainer-ca',
+      hostname: 'ledgerit-ca',
       url: 'https://localhost:7054',
-      mspId: 'TrackchainerOrgMSP'
+      mspId: 'LedgerITOrgMSP'
     },
     admin: {
-      key: readCryptoFile('Admin@trackchainer-org-key.pem'),
-      cert: readCryptoFile('Admin@trackchainer-org-cert.pem')
+      key: readCryptoFile('Admin@ledgerit-org-key.pem'),
+      cert: readCryptoFile('Admin@ledgerit-org-cert.pem')
     }
   }
 };

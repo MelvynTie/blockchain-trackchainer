@@ -4,7 +4,7 @@
 # blockchain network that are necessary for the applications to interact with it. These are all
 # knowledge that must be acquired from out-of-band sources. This file provides such a source.
 #
-name: "trackchainer"
+name: "ledgerit"
 
 #
 # Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
@@ -48,7 +48,7 @@ channels:
 
     # Required. list of peers from participating orgs
     peers:
-      trackchainer-peer:
+      ledgerit-peer:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -73,17 +73,17 @@ channels:
     # this list with the query results of getInstalledChaincodes() and getInstantiatedChaincodes()
     chaincodes:
       # the format follows the "cannonical name" of chaincodes by fabric code
-      - trackchainer:v0
+      - ledgerit:v0
 
 #
 # list of participating organizations in this network
 #
 organizations:
-  TrackchainerOrg:
-    mspid: TrackchainerOrgMSP
+  LedgerITOrg:
+    mspid: LedgerITOrgMSP
 
     peers:
-      - trackchainer-peer
+      - ledgerit-peer
 
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
     # network. Typically certificates provisioning is done in a separate process outside of the
@@ -91,7 +91,7 @@ organizations:
     # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
     # Fabric-CA servers.
     certificateAuthorities:
-      - TrackchainerOrg
+      - LedgerITOrg
 
     # [Optional]. If the application is going to make requests that are reserved to organization
     # administrators, including creating/updating channels, installing/instantiating chaincodes, it
@@ -101,9 +101,9 @@ organizations:
     # this way. The SDK should allow applications to set the org admin identity via APIs, and only use
     # this route as an alternative when it exists.
     adminPrivateKey:
-      path: cli/peers/peerOrganizations/trackchainer-org/users/Admin@trackchainer-org/msp/keystore/key.pem
+      path: cli/peers/peerOrganizations/ledgerit-org/users/Admin@ledgerit-org/msp/keystore/key.pem
     signedCert:
-      path: cli/peers/peerOrganizations/trackchainer-org/users/Admin@trackchainer-org/msp/keystore/Admin@trackchainer-org-cert.pem
+      path: cli/peers/peerOrganizations/ledgerit-org/users/Admin@ledgerit-org/msp/keystore/Admin@ledgerit-org-cert.pem
 
   # the profile will contain public information about organizations other than the one it belongs to.
   # These are necessary information to make transaction lifecycles work, including MSP IDs and
@@ -126,14 +126,14 @@ orderers:
       ssl-target-name-override: orderer0
 
     tlsCACerts:
-      path: cli/peers/ordererOrganizations/trackchainer-orderer/orderers/orderer0/tls/ca.crt
+      path: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer0/tls/ca.crt
 
 #
 # List of peers to send various requests to, including endorsement, query
 # and event listener registration.
 #
 peers:
-  trackchainer-peer:
+  ledgerit-peer:
     # this URL is used to send endorsement and query requests
     url: grpcs://localhost:7051
 
@@ -141,9 +141,9 @@ peers:
     eventUrl: grpcs://localhost:7053
 
     grpcOptions:
-      ssl-target-name-override: trackchainer-peer
+      ssl-target-name-override: ledgerit-peer
     tlsCACerts:
-      path: cli/peers/peerOrganizations/trackchainer-org/peers/trackchainer-peer/tls/ca.crt
+      path: cli/peers/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/ca.crt
 
 
 #
@@ -152,14 +152,14 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  trackchainer-ca:
+  ledgerit-ca:
     url: https://localhost:7054
     # the properties specified under this object are passed to the 'http' client verbatim when
     # making the request to the Fabric-CA server
     httpOptions:
       verify: false
     tlsCACerts:
-      path: cli/peers/peerOrganizations/trackchainer-org/ca/ca.trackchainer-org-cert.pem
+      path: cli/peers/peerOrganizations/ledgerit-org/ca/ca.ledgerit-org-cert.pem
 
     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
     # needed to enroll and invoke new users.
@@ -167,4 +167,4 @@ certificateAuthorities:
       - enrollId: admin
         enrollSecret: adminpw
     # [Optional] The optional name of the CA.
-    caName: trackchainer-ca
+    caName: ledgerit-ca

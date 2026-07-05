@@ -1,8 +1,7 @@
 #!usr/bin/bash
 
 #######################
-# JABIL Co.           #
-# Trackchainer        #
+# LedgerIT        #
 # Author : Melvyn Tie #
 #######################
 
@@ -15,10 +14,10 @@ set -ev
 
 
 # define the channel name
-export CHANNEL_NAME=trackchainer
+export CHANNEL_NAME=ledgerit
 
 # export the build path
-export PATH=$GOPATH/src/trackchainer/hyperledger/fabric/build/bin:${PWD}/binary:${PWD}:$PATH
+export PATH=$GOPATH/src/ledgerit/hyperledger/fabric/build/bin:${PWD}/binary:${PWD}:$PATH
 export FABRIC_CFG_PATH=${PWD}/network
 
 # helper to run Fabric tools via Docker if on macOS
@@ -63,7 +62,7 @@ fi
 cp -r ./network/cli/peers/channel.tx ./web/
 
 # generate anchor peer transaction
-run_tool configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./network/cli/peers/TrackchainerOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg TrackchainerOrgMSP
+run_tool configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./network/cli/peers/LedgerITOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg LedgerITOrgMSP
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate anchor peer update for orgMSP..."
   exit 1
@@ -224,8 +223,8 @@ if [ $BUILD ];
     echo '#                 BUILDING CONTAINER IMAGES                #'
     echo '############################################################'
     docker build -t orderer0:latest network/orderer
-    docker build -t trackchainer-peer:latest network/peer
-    docker build -t trackchainer-ca:latest network/org
+    docker build -t ledgerit-peer:latest network/peer
+    docker build -t ledgerit-ca:latest network/org
     docker build -t web:latest web/
 fi
 
@@ -235,7 +234,7 @@ fi
 
 # don't rewrite paths for Windows Git Bash users
 export MSYS_NO_PATHCONV=1
-export COMPOSE_PROJECT_NAME=trackchainer
+export COMPOSE_PROJECT_NAME=ledgerit
 
 # bring down the network
 docker-compose -f network/docker-compose.yml down

@@ -1,6 +1,5 @@
 /*####################
-# JABIL CO.
-# TRACKCHAINER
+# LEDGERIT
 # AUTHOR:MELVYN TIE
 ###################*/
 
@@ -19,10 +18,10 @@ window.digitalData = {
 	"pageInfo": {
       	"language": "en-US",
       	"publishDate": "2017-08-03",
-      	"publisher": "Jabil Corporation",
+      	"publisher": "LedgerIT Corporation",
       	"version": "v1",
       	"pageID": "None",
-      	"jabil": {
+      	"ledgerit": {
         "contentDelivery": "HTML"
       }
     }

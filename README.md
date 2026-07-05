@@ -1,69 +1,85 @@
-# Trackchainer
+# LedgerIT
 
-Trackchainer is a Proof-of-concept (POC) blockchain application in which users can CRUD ( Create, Read, Update and Delete ) data in the blockchain network.
+LedgerIT is a Proof-of-Concept (POC) blockchain application that allows users to seamlessly perform CRUD (Create, Read, Update, and Delete) operations on a secure, private blockchain network powered by Hyperledger Fabric.
 
-# Prerequisite
-##### This program is only working in the linux system with the following installed:
-- [NodeJS v8++ && npm v6++]
-- [Docker v17++]
-- [Golang v1.10++]
+## Prerequisites
 
-# Instruction
-### Installation
-First make sure the prequisite softwares are installed by checking in the terminal:
+This application has been tested on macOS and Linux environments. Ensure you have the following dependencies installed before proceeding:
+
+- [Node.js v22+ and npm v10+](https://nodejs.org/en/download/package-manager/)
+- [Docker v20+ and Docker Compose](https://docs.docker.com/get-docker/)
+- [Golang v1.20+](https://golang.org/doc/install)
+- [Hyperledger Fabric v2.5.4](https://hyperledger-fabric.readthedocs.io/en/release-2.5/)
+
+### Verify Prerequisites
+
+Verify that the required software is properly installed by running the following command in your terminal:
+
 ```sh
-$  docker --version && node --version && go version
+docker --version && node --version && go version
 ```
-Make sure the following appear in the terminal: 
-If the following output does not show up, please click the link in the prerequisite section and follow the instructions given.
-```sh
-Docker version 17.12.1-ce, build 7390fc6
-v8.11.4
-go version go1.10.3 linux/amd64
-```
-Check the GOPATH
+
+Ensure your `GOPATH` environment variable is set. You can check this by running:
+
 ```sh
 echo $GOPATH
 ```
-If nothing on terminal, type the following code, otherwise, skip this step.
+
+If it is empty, you can add it to your profile (e.g., `~/.bashrc` or `~/.zshrc`):
+
 ```sh
-sed -i '$ a export GOPATH="$HOME/go"' $HOME/.bashrc
+echo 'export GOPATH="$HOME/go"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-Now, clone the repository into your home directory.
-```sh
-cd && git clone git@github.com:natri96/hyperledger-fabric-POC.git
-```
-Goto the trackchainer folder and run the bash script.
-```sh
-cd trackchainer && bash start.sh
-```
-If the bash fail to run, run it in sudo mode
+## Instructions
 
-Make sure the following screen appear in the terminal
+### Installation and Setup
 
-![Docker-Sucess](/images/docker-success.png)
+1. **Clone the Repository:**
+   Clone the repository into your preferred directory and navigate into it:
 
+   ```sh
+   git clone git@github.com:natri96/hyperledger-fabric-POC.git ledgerit
+   cd ledgerit
+   ```
 
-Then, goto to the web directory and run the web application.
-```sh
-cd web && npm install && npm run serve
-```
+2. **Bootstrap the Blockchain Network:**
+   Run the setup script to download the required Docker images, generate the cryptographic materials, and start the Hyperledger Fabric network (Orderers, Peers, and Certificate Authorities). It will also deploy the chaincode and build the web application container.
 
-You will see this on terminal
+   ```sh
+   bash start.sh
+   ```
+   *Note: If you encounter permission issues, you may need to run this command with `sudo`.*
 
-![Web-Success](/images/web-success.png)
+   Upon success, you should see the containers running in your terminal:
 
+   ![Docker-Success](/images/docker-success.png)
 
-Open http://localhost:3000/ in your web browser and there you go!
+3. **Start the Web Application:**
+   The `start.sh` script automatically builds and starts the web application in a Docker container mapped to port 3000. 
 
-If you want to clean the environment, run this command in the repository with the clean.sh file.
+   However, if you wish to run the application natively for development:
+
+   ```sh
+   cd web
+   npm install
+   npm run serve
+   ```
+
+   You should see a success message indicating the server has started:
+
+   ![Web-Success](/images/web-success.png)
+
+### Usage
+
+Open your web browser and navigate to [http://localhost:3000/](http://localhost:3000/) to interact with the application.
+
+### Teardown and Cleanup
+
+To stop the network and clean up all generated containers, volumes, and cryptographic materials, run the provided cleanup script:
+
 ```sh
 bash clean.sh
 ```
-If the command fail, run it in sudo mode
-
-   [NodeJS v8++ && npm v6++]: <https://nodejs.org/en/download/package-manager/>
-   [Docker v17++]: <https://docs.docker.com/install/linux/docker-ce/ubuntu/>
-   [Hyperledger Fabric v1.2]: <https://hyperledger-fabric.readthedocs.io/en/release-1.2/> 
-   [Golang v1.10++]: <https://golang.org/doc/>
+*Note: Run with `sudo` if you encounter permission errors.*
