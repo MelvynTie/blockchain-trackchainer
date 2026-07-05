@@ -1,4 +1,4 @@
-FROM docker.io/hyperledger/fabric-orderer:x86_64-1.1.0
+FROM docker.io/hyperledger/fabric-orderer:2.5.4
 
 RUN mkdir /orderer
 COPY crypto /orderer/crypto

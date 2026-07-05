@@ -28,7 +28,7 @@ run_tool() {
       -v "${PWD}":/opt/gopath/src/github.com/hyperledger/fabric/peer \
       -w /opt/gopath/src/github.com/hyperledger/fabric/peer \
       -e FABRIC_CFG_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/network \
-      hyperledger/fabric-tools:x86_64-1.1.0 \
+      hyperledger/fabric-tools:2.5.4 \
       "$@"
   else
     "$@"
@@ -47,7 +47,7 @@ if [ "$?" -ne 0 ]; then
 fi
 
 # generate genesis block for orderer
-run_tool configtxgen -profile OneOrgOrdererGenesis -outputBlock ./network/cli/peers/genesis.block
+run_tool configtxgen -profile OneOrgOrdererGenesis -outputBlock ./network/cli/peers/genesis.block -channelID system-channel
 if [ "$?" -ne 0 ]; then
   echo "Failed to generate orderer genesis block..."
   exit 1
@@ -199,8 +199,8 @@ else
 fi
 
 if [ $DOWNLOAD ]; then
-   : ${CA_TAG:="x86_64-1.1.0"}
-   : ${FABRIC_TAG:="x86_64-1.1.0"}
+   : ${CA_TAG:="1.5.7"}
+   : ${FABRIC_TAG:="2.5.4"}
 
    echo "===> Pulling fabric Images"
    dockerFabricPull ${FABRIC_TAG}
@@ -242,6 +242,9 @@ docker-compose -f network/docker-compose.yml down
 
 # bring up the network
 docker-compose -f network/docker-compose.yml up -d
+
+# deploy the chaincode and setup the channel
+./deploy.sh
 
 ################################################################################
 # THE END

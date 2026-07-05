@@ -1,9 +1,0 @@
-docker.io/hyperledger/fabric-peer:x86_64-1.1.0
-docker.io/hyperledger/fabric-orderer:x86_64-1.1.0
-docker.io/hyperledger/fabric-ccenv:x86_64-1.1.0
-docker.io/hyperledger/fabric-javaenv:x86_64-1.1.0
-docker.io/hyperledger/fabric-kafka:x86_64-1.1.0
-docker.io/hyperledger/fabric-zookeeper:x86_64-1.1.0
-docker.io/hyperledger/fabric-couchdb:x86_64-1.1.0
-docker.io/hyperledger/fabric-tools:x86_64-1.1.0
-docker.io/hyperledger/fabric-baseos:x86_64-0.4.6

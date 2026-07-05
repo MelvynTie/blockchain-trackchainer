@@ -3,7 +3,7 @@ FROM docker.io/library/node:22-alpine
 ENV NODE_ENV production
 ENV PORT 3000
 ENV DOCKER_SOCKET_PATH /host/var/run/docker.sock
-ENV DOCKER_CCENV_IMAGE hyperledger/fabric-ccenv:x86_64-1.1.0
+ENV DOCKER_CCENV_IMAGE hyperledger/fabric-ccenv:2.5.4
 ENV HFC_GRPC_PROVIDER grpc-js
 
 # git is needed for some npm dependencies; no native build tools needed
