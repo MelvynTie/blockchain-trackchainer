@@ -27,7 +27,8 @@ coverage
 bower_components
 
 # node-waf configuration
-.lock-wscript.jshintignore
+.lock-wscript
+.jshintignore
 .jshintrc
 bin
 dist
@@ -48,12 +49,12 @@ network/peer/msp/*
 network/peer/users/*
 network/peer/peer/*
 network/cli/peers/*
-web/certs/*
-.block
-.tx
-.pem
-.crt
-.key
+web/backend/certs/*
+*.block
+*.tx
+*.pem
+*.crt
+*.key
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
