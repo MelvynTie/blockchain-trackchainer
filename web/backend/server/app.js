@@ -6,7 +6,7 @@
 
 import { Server } from 'http';
 import express from 'express';
-import socketIo from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
 import configureExpress from './config/express.js';
 import router, { wsConfig } from './routers/router.js';
 
@@ -16,7 +16,7 @@ const app = express();
 // Initialise a httpServer
 const httpServer = new Server(app);
 // Setup a web socket
-const io = socketIo(httpServer);
+const io = new SocketIOServer(httpServer);
 // Return the namespace of the path
 wsConfig(io.of(ROOT_URL));
 // Configure the settings of express

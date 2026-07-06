@@ -103,8 +103,6 @@ mkdir -p ./network/{orderer,peer}/crypto
 # move the cypto files
 cp -r $ORDERERS/${CHANNEL_NAME}-orderer/orderers/orderer/{msp,tls} ./network/orderer/crypto
 cp -r $PEERS/${CHANNEL_NAME}-org/peers/${CHANNEL_NAME}-peer/{msp,tls} ./network/peer/crypto
-# cp -r $PEERS/org.${CHANNEL_NAME}.com/peers/peer1.org.${CHANNEL_NAME}.com/{msp,tls} ./network/peer1/crypto
-# cp -r $PEERS/org.${CHANNEL_NAME}.com/peers/peer2.org.${CHANNEL_NAME}.com/{msp,tls} ./network/peer2/crypto
 cp -r ./network/cli/peers/genesis.block ./network/orderer/crypto
 cp -r ./network/cli/peers/channel.tx ./network/orderer/crypto
 cp -r ./network/cli/peers/channel.tx ./web/backend/
@@ -146,8 +144,6 @@ mkdir -p ./web/backend/certs
 # move peer credentials into the keyValStore
 cp -r ./network/orderer/crypto/tls/ca.crt $CERTS/orderer.pem
 cp -r ./network/peer/crypto/tls/ca.crt $CERTS/org.pem
-# cp -r ./network/peer1/crypto/tls/ca.crt $CERTS/org.pem
-# cp -r ./network/peer2/crypto/tls/ca.crt $CERTS/org.pem
 
 # move admin credentials into the keyValStore
 cp -r $PEERS/${CHANNEL_NAME}-org/users/Admin@${CHANNEL_NAME}-org/msp/keystore/* $CERTS/Admin@${CHANNEL_NAME}-org-key.pem

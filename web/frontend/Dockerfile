@@ -1,4 +1,4 @@
-FROM docker.io/library/node:22-alpine as build-stage
+FROM docker.io/library/node:24-alpine as build-stage
 
 WORKDIR /app
 COPY package.json package-lock.json* ./
