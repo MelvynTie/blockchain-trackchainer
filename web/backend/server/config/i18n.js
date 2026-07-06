@@ -13,7 +13,7 @@ export default function (app) {
   const isDev = app.get('env') === 'development';
   // Configure the settings of the i18
   i18n.configure({
-    locales: ['en'],
+    locales: ['en', 'de', 'es', 'pt'],
     defaultLocale: 'en',
     // sets a custom cookie name to parse locale settings from
     cookie: 'applang',
@@ -21,7 +21,7 @@ export default function (app) {
     queryParameter: 'applang',
     // watch for changes in json files to reload locale on updates
     autoReload: isDev,
-    directory: path.resolve(__dirname, "../../client/locales")
+    directory: path.resolve(__dirname, "../../locales")
   });
   // Set cookie 'applang' if query parameter is set to persist result
   app.use((req, res, next) => {

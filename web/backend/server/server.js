@@ -7,9 +7,9 @@
 
 'use strict';
 
-import 'core-js/stable';
+import 'core-js/stable/index.js';
 import dotenv from 'dotenv';
-import server from './app';
+import server from './app.js';
 // Check if the NODE_ENV variable is production or development
 if (process.env.NODE_ENV === 'production') {
   require('@babel/register');
