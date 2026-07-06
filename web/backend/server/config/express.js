@@ -9,7 +9,13 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import morgan from 'morgan';
 import compression from 'compression';
-import i18nConfig from './i18n';
+import cookieParser from 'cookie-parser';
+import i18nConfig from './i18n.js';
+import securityConfig from './security.js';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 
 // Export the default function
 export default function (app) {
@@ -27,7 +33,7 @@ export default function (app) {
     }
   }));
   // Use cookie parser
-  app.use(require('cookie-parser')());
+  app.use(cookieParser());
   // Use body parser to ensure the return of middleware
   // is only parses urlencoded body and only look at requests where
   // the Content-Type header matches the type option
@@ -46,6 +52,6 @@ export default function (app) {
   i18nConfig(app);
   // Set up security features if running in the cloud
   if (process.env.VCAP_APPLICATION) {
-    require('./security').default(app);
+    securityConfig(app);
   }
 }

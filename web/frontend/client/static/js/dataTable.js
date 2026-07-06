@@ -127,7 +127,7 @@ $ ( document ).ready(function() {
     /*Add Button*/
     //Confirm
     $(document).on("click", "#dataTable #add-confirm", function() {
-
+        $(this).prop('disabled', true);
         $(this).parent().parent().parent().addClass('clicked');
         var selectedRows = $('#dataTable tr.clicked');
         var value = selectedRows.find("#add-id").val();

@@ -7,8 +7,8 @@
 import { Server } from 'http';
 import express from 'express';
 import socketIo from 'socket.io';
-import configureExpress from './config/express';
-import router, { wsConfig } from './routers/router';
+import configureExpress from './config/express.js';
+import router, { wsConfig } from './routers/router.js';
 
 const ROOT_URL = '/';
 // Initialise the express framework

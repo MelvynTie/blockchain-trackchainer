@@ -11,6 +11,15 @@ import { Gateway, Wallets } from 'fabric-network';
 import FabricCAServices from 'fabric-ca-client';
 import fs from 'fs';
 import { snakeToCamelCase, camelToSnakeCase } from 'json-style-converter';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import fabricProtos from 'fabric-protos';
+import fabricCommon from 'fabric-common';
+
+const { common } = fabricProtos;
+const { BlockDecoder } = fabricCommon;
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 process.env.GOPATH = resolve(__dirname, '../../chaincode');
 
@@ -85,7 +94,7 @@ export class OrganizationClient extends EventEmitter {
       await this.gateway.connect(connectionProfile, {
         wallet: this.wallet,
         identity: 'admin',
-        discovery: { enabled: true, asLocalhost: true }
+        discovery: { enabled: true, asLocalhost: false }
       });
       
       this.network = await this.gateway.getNetwork(this._channelName);
@@ -93,7 +102,7 @@ export class OrganizationClient extends EventEmitter {
       
       // Setup event listener
       try {
-        await this.network.addBlockListener((event) => {
+        await this.network.addBlockListener(async (event) => {
             this.emit('block', unmarshalBlock(event));
         });
       } catch (listenerErr) {
@@ -138,11 +147,26 @@ export class OrganizationClient extends EventEmitter {
     try {
         const qscc = this.network.getContract('qscc');
         const infoBytes = await qscc.evaluateTransaction('GetChainInfo', this._channelName);
-        const info = JSON.parse(infoBytes.toString()); // Note: this might need protobuf decoding
-        // For simplicity in this demo, return empty if not easily parsable via qscc without protos
-        // In a real migration, we would use the fabric-common QSCC decoding.
-        return [];
+        const info = common.BlockchainInfo.decode(infoBytes);
+        const height = Number(info.height);
+
+        let blocks = [];
+        let limit = parseInt(noOfLastBlocks, 10);
+        if (isNaN(limit) || limit <= 0) limit = 10;
+
+        const startBlock = Math.max(0, height - limit);
+        for (let i = height - 1; i >= startBlock; i--) {
+            const blockBytes = await qscc.evaluateTransaction('GetBlockByNumber', this._channelName, String(i));
+            const decodedBlock = BlockDecoder.decodeBlock(blockBytes);
+            const blockEvent = {
+                blockNumber: decodedBlock.header.number,
+                blockData: decodedBlock
+            };
+            blocks.push(unmarshalBlock(blockEvent));
+        }
+        return blocks;
     } catch(e) {
+        console.error('Error fetching blocks:', e);
         return [];
     }
   }
@@ -193,17 +217,41 @@ function unmarshalResult(result) {
 function unmarshalBlock(blockEvent) {
   // Translate the Fabric v2 BlockEvent to the format expected by the frontend
   const transactions = [];
-  if (blockEvent.blockData && blockEvent.blockData.data) {
-      for (const data of blockEvent.blockData.data) {
-          transactions.push({
-              type: data.payload.header.channel_header.type,
-              timestamp: data.payload.header.channel_header.timestamp
-          });
+  try {
+      if (blockEvent.blockData && blockEvent.blockData.data && Array.isArray(blockEvent.blockData.data.data)) {
+          for (const data of blockEvent.blockData.data.data) {
+              if (data && data.payload && data.payload.header && data.payload.header.channel_header) {
+                  transactions.push({
+                      type: data.payload.header.channel_header.type,
+                      timestamp: data.payload.header.channel_header.timestamp
+                  });
+              }
+          }
+      } else if (typeof blockEvent.getTransactionEvents === 'function') {
+          const txEvents = blockEvent.getTransactionEvents();
+          for (const tx of txEvents) {
+              transactions.push({
+                  type: 'ENDORSER_TRANSACTION',
+                  timestamp: { seconds: 0 } // fallback
+              });
+          }
+      }
+  } catch (e) {
+      console.warn('Failed to parse transactions in blockEvent', e);
+  }
+  
+  let fingerprint = 'unknown';
+  if (blockEvent.blockData && blockEvent.blockData.header && blockEvent.blockData.header.data_hash) {
+      if (Buffer.isBuffer(blockEvent.blockData.header.data_hash)) {
+          fingerprint = blockEvent.blockData.header.data_hash.slice(0, 20).toString('hex');
+      } else {
+          fingerprint = blockEvent.blockData.header.data_hash.toString().slice(0, 40);
       }
   }
+
   return {
-    id: blockEvent.blockNumber.toString(),
-    fingerprint: blockEvent.blockData.header.data_hash.slice(0, 20).toString('hex'),
+    id: blockEvent.blockNumber ? blockEvent.blockNumber.toString() : '0',
+    fingerprint,
     transactions
   };
 }

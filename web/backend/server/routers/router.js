@@ -1,7 +1,7 @@
-
 import express from 'express';
+import crypto from 'crypto';
 
-import * as Peer from '../blockchain/peer';
+import * as Peer from '../blockchain/peer.js';
 
 const router = express.Router();
 
@@ -126,20 +126,7 @@ router.get('/create', async (req, res) => {
 // Submit the create request 
 router.post('/create', async (req, res) => {
   try {
-    const data = await Peer.showLaptops() || [];
-    let maxId = -1;
-    for (const item of data) {
-      if (item && item.Key) {
-        const match = item.Key.match(/^LAPTOP(\d+)$/);
-        if (match) {
-          const num = parseInt(match[1], 10);
-          if (num > maxId) {
-            maxId = num;
-          }
-        }
-      }
-    }
-    const lastId = "LAPTOP" + (maxId + 1);
+    const lastId = "LAPTOP-" + crypto.randomUUID();
     let {sn , employer} = req.body;
     const laptop = await Peer.createLaptop(lastId, sn, employer);
     if(laptop){

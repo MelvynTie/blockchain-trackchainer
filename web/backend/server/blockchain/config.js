@@ -4,7 +4,10 @@
 ////////////////////////
 
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Define the path of the certs
 const basePath = resolve(__dirname, '../../certs');
@@ -19,19 +22,19 @@ const config = {
   chaincodePath: 'ledgerit',
   orderer: {
     hostname: 'orderer',
-    url: 'grpcs://localhost:7050',
+    url: 'grpcs://orderer:7050',
     pem: readCryptoFile('orderer.pem')
   },
   org: {
     peer: {
       hostname: 'ledgerit-peer',
-      url: 'grpcs://localhost:7051',
-      eventHubUrl: 'grpcs://localhost:7053',
+      url: 'grpcs://ledgerit-peer:7051',
+      eventHubUrl: 'grpcs://ledgerit-peer:7053',
       pem: readCryptoFile('org.pem')
     },
     ca: {
       hostname: 'ledgerit-ca',
-      url: 'https://localhost:7054',
+      url: 'https://ledgerit-ca:7054',
       mspId: 'LedgerITOrgMSP',
       pem: readCryptoFile('org.pem')
     },

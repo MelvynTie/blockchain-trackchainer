@@ -5,8 +5,8 @@
 // Author : Melvyn Tie
 ////////////////////////
 
-import config from './config';
-import { OrganizationClient } from './utils';
+import config from './config.js';
+import { OrganizationClient } from './utils.js';
 
 // Set status
 let status = 'down';

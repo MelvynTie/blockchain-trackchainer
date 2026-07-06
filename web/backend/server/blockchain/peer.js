@@ -5,9 +5,9 @@
 // Author : Melvyn Tie
 ////////////////////////
 
-import config from './config';
-import { wrapError } from './utils';
-import { ledgeritClient as client, isReady } from './setup';
+import config from './config.js';
+import { wrapError } from './utils.js';
+import { ledgeritClient as client, isReady } from './setup.js';
 
 // Show all the laptops data
 export async function showLaptops() {

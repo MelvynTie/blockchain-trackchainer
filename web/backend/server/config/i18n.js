@@ -7,6 +7,9 @@
 
 import i18n from 'i18n';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default function (app) {
   // Get the status of the Dev

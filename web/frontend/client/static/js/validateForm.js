@@ -25,6 +25,7 @@ $(document).ready(function () {
         // Make sure the form is submitted to the destination defined
         // in the "action" attribute of the form when valid
         submitHandler: function(form) {
+            $(form).find('button[type="submit"]').prop('disabled', true);
             form.submit();
         }
     });
