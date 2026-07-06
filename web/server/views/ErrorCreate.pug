@@ -1,11 +1,13 @@
 extends _layout
 
 block content
-    h1.display-1 Error 
-    p.lead Failed to create new laptop into ledger because there is the other same laptop exists. You can 
-        | 
-        a(href="javascript:history.back()") go back
-        | 
-        | to the previous page, or
-        | 
-        a(href="/") return home 
+    .glass-card
+        .card-body.text-center
+            h1.display-1.text-danger Error 
+            p.lead Failed to create new record because there is already an existing record. You can 
+                | 
+                a(href="javascript:history.back()") go back
+                | 
+                | to the previous page, or
+                | 
+                a(href="/") return home 

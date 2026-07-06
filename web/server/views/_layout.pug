@@ -8,19 +8,20 @@ html(lang='en')
       meta(name='og:title' content='IBM Blockchain for Inventory')
       script(src='/socket.io/socket.io.js')
       link(rel='alternate', href='?applang=en', hreflang='en-us')
-      link(rel='stylesheet', type="text/css", href="./css/sb-admin.css")
+      link(rel='stylesheet', type="text/css", href="./css/modern-theme.css")
       link(href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet")
       link(href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css")
+      link(rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")
       link(rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons")
       block static
 
     body#page-top
-      nav.navbar.navbar-expand.navbar-dark.bg-dark.static-top
+      nav.navbar.navbar-expand.navbar-dark.glass-nav.static-top
         a.navbar-brand(href='/') LedgerIT
         
       #wrapper
         // Sidebar
-        ul.sidebar.navbar-nav
+        ul.sidebar.navbar-nav.glass-panel
           li.nav-item.active
             a.nav-link(href='/')
               i.fas.fa-fw.fa-tachometer-alt

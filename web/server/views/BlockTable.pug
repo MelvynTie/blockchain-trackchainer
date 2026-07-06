@@ -1,19 +1,23 @@
 extends _layout
 
 block content
-	form(id="input-form" action="/block" method="post")
-		.form-group
-			label(for="serial-number") Write in the last nth number of block you want to view :
-			input(type="text" class="form-control" id="inputBlockNo" aria-describedby="block-number-help" placeholder="Enter block number" name="blockNo")
-			br
+	.glass-card
+		.card-header
+			i.fas.fa-search  Search Block
+		.card-body
+			form(id="input-form" action="/block" method="post")
+				.form-group
+					label(for="serial-number") Write in the last nth number of block you want to view :
+					input(type="text" class="form-control" id="inputBlockNo" aria-describedby="block-number-help" placeholder="Enter block number" name="blockNo")
+					br
 
-	.card.mb-3
+	.glass-card
 		.card-header
 			i.fas.fa-table  Block Table
 		.card-body
 			.table-responsive
 				// Table
-				table(class="table table-bordered table-responsive-md table-striped text-center" id="blockTable" width="100%")
+				table(class="table table-borderless table-responsive-md table-hover text-center" id="blockTable" width="100%")
 						thead
 							tr
 								th.text-center ID.

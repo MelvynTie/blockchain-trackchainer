@@ -5,13 +5,13 @@ block static
 	script(src="js/historyTable.js" type="text/javascript" )
 
 block content
-	.card.mb-3
+	.glass-card
 		.card-header
 			i.fas.fa-table  #{laptop}
 		.card-body
 			.table-responsive
 				// Table
-				table(class="table table-bordered table-responsive-md table-striped text-center" id="dataTable" width="100%")
+				table(class="table table-borderless table-responsive-md table-hover text-center" id="dataTable" width="100%")
 						thead
 							tr
 								th.text-center txID

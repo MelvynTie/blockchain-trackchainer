@@ -4,13 +4,13 @@ block static
 	link(rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css")
 	link(rel="stylesheet" type="text/css" href="css/dataTable.css")
 block content
-	.card.mb-3
+	.glass-card
 		.card-header
 			i.fas.fa-table  Data Table
 		.card-body
 			.table-responsive
 				// Table
-				table(class="table table-bordered table-responsive-md table-striped text-center" id="dataTable" width="100%")
+				table(class="table table-borderless table-responsive-md table-hover text-center" id="dataTable" width="100%")
 						thead
 							tr
 								th.text-center No.
