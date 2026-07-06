@@ -17,6 +17,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"os"
 	"strconv"
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	sc "github.com/hyperledger/fabric-protos-go/peer"
@@ -338,9 +339,29 @@ func getHistoryListResult(resultsIterator shim.HistoryQueryIteratorInterface) ([
 
 // The main function is only relevant in unit test mode. Only included here for completeness.
 func main() {
-
-	err := shim.Start(new(SmartContract))
-	if err != nil {
-		fmt.Printf("Error starting Simple chaincode: %s", err)
+	serverAddress := os.Getenv("CHAINCODE_SERVER_ADDRESS")
+	
+	if serverAddress != "" {
+		// Run as Chaincode-as-a-Service (CCAAS)
+		server := &shim.ChaincodeServer{
+			CCID:    os.Getenv("CORE_CHAINCODE_ID_NAME"),
+			Address: serverAddress,
+			CC:      new(SmartContract),
+			TLSProps: shim.TLSProperties{
+				Disabled: true,
+			},
+		}
+		
+		fmt.Printf("Starting ChaincodeServer at %s with CCID %s\n", serverAddress, os.Getenv("CORE_CHAINCODE_ID_NAME"))
+		err := server.Start()
+		if err != nil {
+			fmt.Printf("Error starting ChaincodeServer: %s", err)
+		}
+	} else {
+		// Fallback to standard peer-managed mode
+		err := shim.Start(new(SmartContract))
+		if err != nil {
+			fmt.Printf("Error starting Simple chaincode: %s", err)
+		}
 	}
 }

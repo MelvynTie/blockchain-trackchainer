@@ -10,6 +10,7 @@
 OrdererOrgs:
   - Name: Orderer0
     Domain: ledgerit-orderer
+    EnableNodeOUs: true
     CommonName: orderer0
     Specs:
       - Hostname: orderer0
@@ -22,6 +23,7 @@ OrdererOrgs:
 PeerOrgs:
   - Name: LedgerITOrg
     Domain: ledgerit-org
+    EnableNodeOUs: true
     Specs:
       - Hostname: ledgerit-peer
         CommonName: "{{.Hostname}}"

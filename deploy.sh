@@ -23,8 +23,28 @@ echo "##########################################################"
 echo "### Chaincode Lifecycle ###"
 echo "##########################################################"
 
-# 1. Package the chaincode
-docker exec cli peer lifecycle chaincode package ledgerit.tar.gz --path /opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode/ --lang golang --label ledgerit_1.0
+# 1. Package the chaincode using CCAAS pattern
+cat << 'EOF' > connection.json
+{
+  "address": "ledgerit-chaincode:9999",
+  "dial_timeout": "10s",
+  "tls_required": false
+}
+EOF
+
+cat << 'EOF' > metadata.json
+{
+    "type": "ccaas",
+    "label": "ledgerit_1.0"
+}
+EOF
+
+tar cfz code.tar.gz connection.json
+tar cfz ledgerit.tar.gz metadata.json code.tar.gz
+rm connection.json metadata.json code.tar.gz
+
+# Copy the CCAAS package into the CLI container
+docker cp ledgerit.tar.gz cli:/opt/gopath/src/github.com/hyperledger/fabric/peer/ledgerit.tar.gz
 
 # 2. Install the chaincode
 docker exec cli peer lifecycle chaincode install ledgerit.tar.gz
@@ -32,6 +52,13 @@ docker exec cli peer lifecycle chaincode install ledgerit.tar.gz
 # Extract the package ID
 PACKAGE_ID=$(docker exec cli peer lifecycle chaincode queryinstalled | grep ledgerit_1.0 | awk '{print $3}' | sed 's/,//')
 echo "Package ID is ${PACKAGE_ID}"
+
+# 2.5 Start the external chaincode container
+echo "Starting ledgerit-chaincode container..."
+export PACKAGE_ID=${PACKAGE_ID}
+export COMPOSE_PROJECT_NAME=ledgerit
+docker-compose -f network/docker-compose.yml up -d --build ledgerit-chaincode
+sleep 10
 
 # 3. Approve for My Org
 docker exec cli peer lifecycle chaincode approveformyorg -o orderer0:7050 --ordererTLSHostnameOverride orderer0 --channelID ledgerit --name ledgerit --version 1.0 --package-id ${PACKAGE_ID} --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem

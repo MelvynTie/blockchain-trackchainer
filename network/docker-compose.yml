@@ -155,3 +155,16 @@ services:
       - net
     depends_on:
       - ledgerit-peer
+
+  ledgerit-chaincode:
+    container_name: ledgerit-chaincode
+    build:
+      context: ../web/chaincode/src/ledgerit
+      dockerfile: Dockerfile
+    environment:
+      - CHAINCODE_SERVER_ADDRESS=0.0.0.0:9999
+      - CORE_CHAINCODE_ID_NAME=${PACKAGE_ID}
+    ports:
+      - "9999:9999"
+    networks:
+      - net
