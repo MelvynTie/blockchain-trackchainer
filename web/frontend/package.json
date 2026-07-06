@@ -80,9 +80,9 @@
     "socket.io": "^4.8.1",
     "style-loader": "^4.0.0",
     "url-loader": "4.1.1",
-    "uuid": "^11.0.5",
+    "uuid": "^14.0.1",
     "webpack-dev-middleware": "^7.4.2",
-    "webpack-dev-server": "^5.2.0",
+    "webpack-dev-server": "^6.0.0",
     "webpack-hot-middleware": "2.26.1"
   },
   "devDependencies": {
