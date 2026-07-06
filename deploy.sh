@@ -9,7 +9,7 @@ echo "##########################################################"
 sleep 10
 
 # Create the channel block
-docker exec cli peer channel create -o orderer0:7050 -c ledgerit -f /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/channel.tx --outputBlock /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ledgerit.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem
+docker exec cli peer channel create -o orderer:7050 -c ledgerit -f /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/channel.tx --outputBlock /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ledgerit.block --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem
 
 sleep 3
 
@@ -17,7 +17,7 @@ sleep 3
 docker exec cli peer channel join -b /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ledgerit.block
 
 # Update anchor peers
-docker exec cli peer channel update -o orderer0:7050 -c ledgerit -f /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/LedgerITOrgMSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem
+docker exec cli peer channel update -o orderer:7050 -c ledgerit -f /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/LedgerITOrgMSPanchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem
 
 echo "##########################################################"
 echo "### Chaincode Lifecycle ###"
@@ -61,18 +61,18 @@ docker-compose -f network/docker-compose.yml up -d --build ledgerit-chaincode
 sleep 10
 
 # 3. Approve for My Org
-docker exec cli peer lifecycle chaincode approveformyorg -o orderer0:7050 --ordererTLSHostnameOverride orderer0 --channelID ledgerit --name ledgerit --version 1.0 --package-id ${PACKAGE_ID} --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem
+docker exec cli peer lifecycle chaincode approveformyorg -o orderer:7050 --ordererTLSHostnameOverride orderer --channelID ledgerit --name ledgerit --version 1.0 --package-id ${PACKAGE_ID} --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem
 
 # 4. Check commit readiness
-docker exec cli peer lifecycle chaincode checkcommitreadiness --channelID ledgerit --name ledgerit --version 1.0 --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem --output json
+docker exec cli peer lifecycle chaincode checkcommitreadiness --channelID ledgerit --name ledgerit --version 1.0 --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem --output json
 
 # 5. Commit the chaincode
-docker exec cli peer lifecycle chaincode commit -o orderer0:7050 --ordererTLSHostnameOverride orderer0 --channelID ledgerit --name ledgerit --version 1.0 --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem --peerAddresses ledgerit-peer:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/ca.crt
+docker exec cli peer lifecycle chaincode commit -o orderer:7050 --ordererTLSHostnameOverride orderer --channelID ledgerit --name ledgerit --version 1.0 --sequence 1 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem --peerAddresses ledgerit-peer:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/ca.crt
 
 # Wait for commit to propagate
 sleep 3
 
 # 6. Invoke InitLedger
-docker exec cli peer chaincode invoke -o orderer0:7050 --ordererTLSHostnameOverride orderer0 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer0/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem -C ledgerit -n ledgerit --peerAddresses ledgerit-peer:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
+docker exec cli peer chaincode invoke -o orderer:7050 --ordererTLSHostnameOverride orderer --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/ledgerit-orderer/orderers/orderer/msp/tlscacerts/tlsca.ledgerit-orderer-cert.pem -C ledgerit -n ledgerit --peerAddresses ledgerit-peer:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/ledgerit-org/peers/ledgerit-peer/tls/ca.crt -c '{"function":"initLedger","Args":[]}'
 
 echo "Chaincode deployed successfully!"

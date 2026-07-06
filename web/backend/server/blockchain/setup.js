@@ -15,7 +15,7 @@ let statusChangedCallbacks = [];
 // Setup clients per organization
 const ledgeritClient = new OrganizationClient(
   config.channelName,
-  config.orderer0,
+  config.orderer,
   config.org.peer,
   config.org.ca,
   config.org.admin

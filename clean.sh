@@ -22,7 +22,7 @@ docker rm -f $(docker ps -aq)
 docker rmi $(docker images -f "dangling=true" -q)
 
 # remove docker images
-images=( ledgerit-ca ledgerit-peer orderer0 app )
+images=( ledgerit-ca ledgerit-peer orderer ledgerit-client ledgerit-server )
 
 for i in "${images[@]}"
 do

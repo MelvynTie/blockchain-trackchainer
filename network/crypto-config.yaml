@@ -8,12 +8,12 @@
 ################################################################################
 
 OrdererOrgs:
-  - Name: Orderer0
+  - Name: Orderer
     Domain: ledgerit-orderer
     EnableNodeOUs: true
-    CommonName: orderer0
+    CommonName: orderer
     Specs:
-      - Hostname: orderer0
+      - Hostname: orderer
         CommonName: "{{.Hostname}}"
 
 ################################################################################

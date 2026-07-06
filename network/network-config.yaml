@@ -44,7 +44,7 @@ channels:
     # operational decisions to share loads from applications among the orderers.  The values must
     # be "names" of orgs defined under "organizations/peers"
     orderers:
-      - orderer0
+      - orderer
 
     # Required. list of peers from participating orgs
     peers:
@@ -117,16 +117,16 @@ organizations:
 # SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
 #
 orderers:
-  orderer0:
+  orderer:
     url: grpcs://localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
     grpcOptions:
-      ssl-target-name-override: orderer0
+      ssl-target-name-override: orderer
 
     tlsCACerts:
-      path: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer0/tls/ca.crt
+      path: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer/tls/ca.crt
 
 #
 # List of peers to send various requests to, including endorsement, query

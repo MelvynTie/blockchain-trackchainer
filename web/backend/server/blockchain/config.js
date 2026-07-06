@@ -17,10 +17,10 @@ const config = {
   chaincodeId: 'ledgerit',
   chaincodeVersion: 'v1',
   chaincodePath: 'ledgerit',
-  orderer0: {
-    hostname: 'orderer0',
+  orderer: {
+    hostname: 'orderer',
     url: 'grpcs://localhost:7050',
-    pem: readCryptoFile('orderer0.pem')
+    pem: readCryptoFile('orderer.pem')
   },
   org: {
     peer: {
@@ -43,7 +43,7 @@ const config = {
 };
 // Define the local configuration for development process 
 if (process.env.LOCALCONFIG) {
-  config.orderer0.url = 'grpcs://localhost:7050';
+  config.orderer.url = 'grpcs://localhost:7050';
 
   config.org.peer.url = 'grpcs://localhost:7051';
 

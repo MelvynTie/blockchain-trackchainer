@@ -59,7 +59,7 @@ if [ "$?" -ne 0 ]; then
   exit 1
 fi
 
-cp -r ./network/cli/peers/channel.tx ./web/
+cp -r ./network/cli/peers/channel.tx ./web/backend/
 
 # generate anchor peer transaction
 run_tool configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./network/cli/peers/LedgerITOrgMSPanchors.tx -channelID $CHANNEL_NAME -asOrg LedgerITOrgMSP
@@ -101,13 +101,13 @@ mkdir -p ./network/{orderer,peer}/crypto
 # sudo chown -R melvyn:melvyn ./*
 
 # move the cypto files
-cp -r $ORDERERS/${CHANNEL_NAME}-orderer/orderers/orderer0/{msp,tls} ./network/orderer/crypto
+cp -r $ORDERERS/${CHANNEL_NAME}-orderer/orderers/orderer/{msp,tls} ./network/orderer/crypto
 cp -r $PEERS/${CHANNEL_NAME}-org/peers/${CHANNEL_NAME}-peer/{msp,tls} ./network/peer/crypto
 # cp -r $PEERS/org.${CHANNEL_NAME}.com/peers/peer1.org.${CHANNEL_NAME}.com/{msp,tls} ./network/peer1/crypto
 # cp -r $PEERS/org.${CHANNEL_NAME}.com/peers/peer2.org.${CHANNEL_NAME}.com/{msp,tls} ./network/peer2/crypto
 cp -r ./network/cli/peers/genesis.block ./network/orderer/crypto
 cp -r ./network/cli/peers/channel.tx ./network/orderer/crypto
-cp -r ./network/cli/peers/channel.tx ./web/
+cp -r ./network/cli/peers/channel.tx ./web/backend/
 
 export ORG=./network/org
 
@@ -138,13 +138,13 @@ export CERTS=./network/hfc-key-store/
 
 # delete previous creds
 rm -rf ./network/hfc-key-store/*
-rm -rf ./web/certs/*
+rm -rf ./web/backend/certs/*
 # create hfc-key-store
 mkdir -p ./network/hfc-key-store
-mkdir -p ./web/certs
+mkdir -p ./web/backend/certs
 
 # move peer credentials into the keyValStore
-cp -r ./network/orderer/crypto/tls/ca.crt $CERTS/orderer0.pem
+cp -r ./network/orderer/crypto/tls/ca.crt $CERTS/orderer.pem
 cp -r ./network/peer/crypto/tls/ca.crt $CERTS/org.pem
 # cp -r ./network/peer1/crypto/tls/ca.crt $CERTS/org.pem
 # cp -r ./network/peer2/crypto/tls/ca.crt $CERTS/org.pem
@@ -153,7 +153,7 @@ cp -r ./network/peer/crypto/tls/ca.crt $CERTS/org.pem
 cp -r $PEERS/${CHANNEL_NAME}-org/users/Admin@${CHANNEL_NAME}-org/msp/keystore/* $CERTS/Admin@${CHANNEL_NAME}-org-key.pem
 cp -r $PEERS/${CHANNEL_NAME}-org/users/Admin@${CHANNEL_NAME}-org/msp/signcerts/* $CERTS/
 
-cp -r $CERTS/* ./web/certs/
+cp -r $CERTS/* ./web/backend/certs/
 # change permission
 # sudo chown -R melvyn:melvyn ./*
 
@@ -222,10 +222,11 @@ if [ $BUILD ];
     echo '############################################################'
     echo '#                 BUILDING CONTAINER IMAGES                #'
     echo '############################################################'
-    docker build -t orderer0:latest network/orderer
+    docker build -t orderer:latest network/orderer
     docker build -t ledgerit-peer:latest network/peer
     docker build -t ledgerit-ca:latest network/org
-    docker build -t web:latest web/
+    docker build -t ledgerit-client:latest web/frontend
+    docker build -t ledgerit-server:latest web/backend
 fi
 
 ################################################################################

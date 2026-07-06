@@ -79,7 +79,7 @@ Application: &ApplicationDefaults
 Orderer: &OrdererDefaults
     OrdererType: etcdraft
     Addresses:
-        - orderer0:7050
+        - orderer:7050
     BatchTimeout: 2s
     BatchSize:
         MaxMessageCount: 10
@@ -88,10 +88,10 @@ Orderer: &OrdererDefaults
     Organizations:
     EtcdRaft:
         Consenters:
-        - Host: orderer0
+        - Host: orderer
           Port: 7050
-          ClientTLSCert: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer0/tls/server.crt
-          ServerTLSCert: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer0/tls/server.crt
+          ClientTLSCert: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer/tls/server.crt
+          ServerTLSCert: cli/peers/ordererOrganizations/ledgerit-orderer/orderers/orderer/tls/server.crt
     Policies:
         Readers:
             Type: ImplicitMeta
