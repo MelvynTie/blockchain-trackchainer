@@ -72,29 +72,33 @@ export class OrganizationClient extends EventEmitter {
             }
           }
         },
-        certificateAuthorities: {
-          [this._caConfig.hostname]: {
-            url: this._caConfig.url,
-            caName: '',
-            tlsCACerts: { pem: this._caConfig.pem },
-            httpOptions: { verify: false }
+          certificateAuthorities: {
+            [this._caConfig.hostname]: {
+              url: this._caConfig.url,
+              caName: '',
+              tlsCACerts: this._caConfig.pem ? { pem: this._caConfig.pem } : {},
+              httpOptions: { verify: false }
+            }
           }
-        }
       };
 
       await this.gateway.connect(connectionProfile, {
         wallet: this.wallet,
         identity: 'admin',
-        discovery: { enabled: true, asLocalhost: false }
+        discovery: { enabled: true, asLocalhost: true }
       });
       
       this.network = await this.gateway.getNetwork(this._channelName);
       this.contract = this.network.getContract('ledgerit');
       
       // Setup event listener
-      await this.network.addBlockListener('block-listener', (event) => {
-          this.emit('block', unmarshalBlock(event));
-      });
+      try {
+        await this.network.addBlockListener((event) => {
+            this.emit('block', unmarshalBlock(event));
+        });
+      } catch (listenerErr) {
+        console.warn('Block listener setup failed (non-fatal):', listenerErr.message);
+      }
       
     } catch (e) {
       console.error(`Failed to login/connect. Error: ${e.message}`);

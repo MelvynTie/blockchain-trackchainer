@@ -1,4 +1,4 @@
-#!usr/bin/bash
+#!/usr/bin/bash
 
 #######################
 # LedgerIT        #
@@ -188,10 +188,10 @@ if [ $# -eq 0 ]; then
 else
     for arg in "$@"
         do
-            if [ $arg == "build" ]; then
+            if [ $arg = "build" ]; then
                 BUILD=true
             fi
-            if [ $arg == "download" ]; then
+            if [ $arg = "download" ]; then
                 DOWNLOAD=true
             fi
     done

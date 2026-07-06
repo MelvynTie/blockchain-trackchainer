@@ -32,7 +32,8 @@ const config = {
     ca: {
       hostname: 'ledgerit-ca',
       url: 'https://localhost:7054',
-      mspId: 'LedgerITOrgMSP'
+      mspId: 'LedgerITOrgMSP',
+      pem: readCryptoFile('org.pem')
     },
     admin: {
       key: readCryptoFile('Admin@ledgerit-org-key.pem'),

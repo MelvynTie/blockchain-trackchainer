@@ -13,7 +13,7 @@ $ ( document ).ready(function() {
                 count++;
 
                 var body = "<tr id=\"" + count + "\">";
-                body    += "<td class=\"text-center\"><div id=\"id\">" + data.Key + "</div></td>s";
+                body    += "<td class=\"text-center\"><div id=\"id\">" + data.Key + "</div></td>";
                 body    += "<td class=\"text-center\"><div id=\"serialNo\">" + data.Record.sn + "</div></td>";
                 body    += "<td class=\"text-center\"><div id=\"employer\">" + data.Record.Employer + "</div></td>";
                 body    += "<td class=\"text-center\"><span class=\"table-edit\"></span><div id=\"button\"><button class=\"btn btn-danger btn-rounded btn-sm my-0\" id=\"edit\" type=\"button\">Edit</button></div></td>";

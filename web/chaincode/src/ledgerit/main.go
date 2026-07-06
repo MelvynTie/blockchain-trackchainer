@@ -27,14 +27,14 @@ import (
 type SmartContract struct {
 }
 
-// Define the car structure, with 10 properties.  Structure tags are used by encoding/json library
+// Define the laptop structure, with 2 properties.  Structure tags are used by encoding/json library
 type Laptop struct {
 	SerialNo  	string `json:"sn"`
 	Employer	string `json:"Employer"`
 }
 
 /*
- * The Init method is called when the Smart Contract "fabcar" is instantiated by the blockchain network
+ * The Init method is called when the Smart Contract "LedgerIT" is instantiated by the blockchain network
  * Best practice is to have any Ledger initialization in separate function -- see initLedger()
  */
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {

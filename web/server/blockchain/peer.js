@@ -15,7 +15,7 @@ export async function showLaptops() {
     return;
   }
   try {
-    const data = await invoke('show_laptops');
+    const data = await query('show_laptops');
     return data;
   } catch (e) {
     throw wrapError(`Error getting data: ${e.message}`, e);
@@ -28,7 +28,7 @@ export async function searchLaptop(id) {
     return;
   }
   try {
-    const data = await invoke('search_laptop',{id});
+    const data = await query('search_laptop',{id});
     return data;
   } catch (e) {
     throw wrapError(`Error getting data: ${e.message}`, e);
@@ -76,7 +76,7 @@ export async function getLaptopHistory(id) {
     return;
   }
   try {
-    const data = await invoke('get_laptop_history',{id});
+    const data = await query('get_laptop_history',{id});
     return data;
   } catch (e) {
     throw wrapError(`Error getting history: ${e.message}`, e);

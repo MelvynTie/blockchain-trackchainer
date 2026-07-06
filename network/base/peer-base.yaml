@@ -5,7 +5,7 @@ services:
                         - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
                         # $(COMPOSE_PROJECT_NAME}_${NETWORK_SERVICE}
                         - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=ledgerit_net
-                        - CORE_LOGGING_LEVEL=DEBUG
+                        - FABRIC_LOGGING_SPEC=DEBUG
                       # The following setting skips the gossip handshake since we are
                       # are not doing mutual TLS
                         - CORE_PEER_GOSSIP_SKIPHANDSHAKE=true
